@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Cvek\PartnerBundle\Messenger\Serializer;
 
-use Cvek\PartnerBundle\Messenger\Message\PartnerCreatedMessage;
 use Cvek\PartnerBundle\Messenger\Message\ParseErrorMessage;
 use Cvek\PartnerBundle\Messenger\Message\PartnerRemovedMessage;
 use Symfony\Component\Messenger\Envelope;

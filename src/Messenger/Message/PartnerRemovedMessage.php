@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Cvek\PartnerBundle\Messenger\Message;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 final class PartnerRemovedMessage
 {
     /**

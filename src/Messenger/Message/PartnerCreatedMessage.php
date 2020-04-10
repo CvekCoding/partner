@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Cvek\PartnerBundle\Messenger\Message;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 final class PartnerCreatedMessage
 {
     /**
@@ -22,9 +24,18 @@ final class PartnerCreatedMessage
      */
     private string $partnerId;
 
-    public function __construct(string $partnerId)
+    /**
+     * @var string
+     *
+     * @Assert\NotBlank(message="Currency can not be blank")
+     * @Assert\Currency(message="Currency is not valid")
+     */
+    private string $currency;
+
+    public function __construct(string $partnerId, string $currency)
     {
         $this->partnerId = $partnerId;
+        $this->currency = $currency;
     }
 
     /**
@@ -35,4 +46,11 @@ final class PartnerCreatedMessage
         return $this->partnerId;
     }
 
+    /**
+     * @return string
+     */
+    public function getCurrency(): string
+    {
+        return $this->currency;
+    }
 }

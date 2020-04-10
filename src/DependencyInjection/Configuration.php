@@ -19,11 +19,12 @@ final class Configuration implements ConfigurationInterface
 {
     public const DSN_FIELD = 'dsn';
     public const TRANSPORTS_FIELD = 'transports';
-    public const PARTNER_CREATED_TRANSPORT = 'partner_created';
-    public const PARTNER_REMOVED_TRANSPORT = 'partner_removed';
+    public const FAILURE_TRANSPORT_FIELD = 'failure_transport';
     public const EXCHANGE_NAME_FIELD = 'exchange_name';
     public const ROUTING_KEY_FIELD = 'routing_key';
     public const QUEUE_FIELD = 'queue';
+    public const PARTNER_CREATED_TRANSPORT = 'partner_created';
+    public const PARTNER_REMOVED_TRANSPORT = 'partner_removed';
 
     /**
      * @inheritDoc
@@ -33,7 +34,14 @@ final class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder('cvek_partner');
         $treeBuilder->getRootNode()
             ->children()
-                ->scalarNode('dsn')
+                ->scalarNode(self::FAILURE_TRANSPORT_FIELD)
+                    ->info('Transport to catch error messages')
+                    ->isRequired()
+                    ->cannotBeEmpty()
+                ->end()
+            ->end()
+            ->children()
+                ->scalarNode(self::DSN_FIELD)
                     ->info('Dsn to connect to channel')
                     ->isRequired()
                     ->cannotBeEmpty()

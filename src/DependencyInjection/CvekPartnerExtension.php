@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Cvek\PartnerBundle\DependencyInjection;
 
+use Cvek\PartnerBundle\Messenger\Message\ParseErrorMessage;
 use Cvek\PartnerBundle\Messenger\Message\PartnerCreatedMessage;
 use Cvek\PartnerBundle\Messenger\Message\PartnerRemovedMessage;
 use Cvek\PartnerBundle\Messenger\Serializer\PartnerCreatedSerializer;
@@ -90,6 +91,7 @@ final class CvekPartnerExtension extends Extension implements PrependExtensionIn
                 'routing' => [
                     PartnerCreatedMessage::class => Configuration::PARTNER_CREATED_TRANSPORT,
                     PartnerRemovedMessage::class => Configuration::PARTNER_REMOVED_TRANSPORT,
+                    ParseErrorMessage::class => $config['failure']
                 ],
             ],
         ];
