@@ -1,0 +1,33 @@
+{
+  "name": "cvek/partner-bundle",
+  "description": "Component to handle main partner events",
+  "type": "symfony-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Sergey Logachev",
+      "email": "serg@baitek.org"
+    }
+  ],
+  "require": {
+    "php": "^7.4",
+    "symfony/config": "^4.0",
+    "symfony/dependency-injection": "^4.0",
+    "symfony/http-kernel": "^4.0",
+    "symfony/messenger": "^4.3 || ^5.0",
+    "symfony/serializer": "^4.3 || ^5.0",
+    "symfony/validator": "^4.3",
+    "symfony/intl": "^4.3",
+    "symfony/doctrine-bridge": "^4.0",
+    "doctrine/orm": "^2.0",
+    "ramsey/uuid": "^4.0"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "Cvek\\PartnerBundle\\": "src/"
+    }
+  }
+}
