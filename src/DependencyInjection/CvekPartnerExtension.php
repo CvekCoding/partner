@@ -13,9 +13,11 @@ declare(strict_types=1);
 namespace Cvek\PartnerBundle\DependencyInjection;
 
 use Cvek\PartnerBundle\Messenger\Message\ParseErrorMessage;
+use Cvek\PartnerBundle\Messenger\Message\PartnerAlreadyExistsErrorMessage;
 use Cvek\PartnerBundle\Messenger\Message\PartnerCreatedMessage;
 use Cvek\PartnerBundle\Messenger\Message\PartnerRemovedMessage;
 use Cvek\PartnerBundle\Messenger\Serializer\PartnerCreatedSerializer;
+use Cvek\PartnerBundle\Messenger\Serializer\PartnerRemovedSerializer;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -32,6 +34,18 @@ final class CvekPartnerExtension extends Extension implements PrependExtensionIn
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');
+
+        /** @var Configuration $configuration */
+        $configuration = $this->getConfiguration($configs, $container);
+        $config = $this->processConfiguration($configuration, $configs);
+
+        $definition = $container->getDefinition('cvek_partner_created_handler');
+        $definition->setArgument(2, $config[Configuration::PARTNER_CLASS_FIELD]);
+        $definition->setArgument(3, $config[Configuration::USE_BUILTIN_CREATOR_FIELD]);
+
+        $definition = $container->getDefinition('cvek_partner_removed_handler');
+        $definition->setArgument(1, $config[Configuration::PARTNER_CLASS_FIELD]);
+        $definition->setArgument(2, $config[Configuration::USE_BUILTIN_REMOVER_FIELD]);
     }
 
     public function prepend(ContainerBuilder $container): void
@@ -71,7 +85,7 @@ final class CvekPartnerExtension extends Extension implements PrependExtensionIn
                     ],
                     Configuration::PARTNER_REMOVED_TRANSPORT => [
                         'dsn' => $config[Configuration::DSN_FIELD],
-                        'serializer' => PartnerCreatedSerializer::class,
+                        'serializer' => PartnerRemovedSerializer::class,
                         'retry_strategy' => [
                             'max_retries' => 0,
                         ],
@@ -91,7 +105,8 @@ final class CvekPartnerExtension extends Extension implements PrependExtensionIn
                 'routing' => [
                     PartnerCreatedMessage::class => Configuration::PARTNER_CREATED_TRANSPORT,
                     PartnerRemovedMessage::class => Configuration::PARTNER_REMOVED_TRANSPORT,
-                    ParseErrorMessage::class => $config['failure']
+                    ParseErrorMessage::class => $config[Configuration::FAILURE_TRANSPORT_FIELD],
+                    PartnerAlreadyExistsErrorMessage::class => $config[Configuration::FAILURE_TRANSPORT_FIELD],
                 ],
             ],
         ];

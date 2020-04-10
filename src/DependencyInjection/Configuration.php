@@ -18,6 +18,9 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 final class Configuration implements ConfigurationInterface
 {
     public const DSN_FIELD = 'dsn';
+    public const USE_BUILTIN_CREATOR_FIELD = 'use_builtin_creator';
+    public const USE_BUILTIN_REMOVER_FIELD = 'use_builtin_remover';
+    public const PARTNER_CLASS_FIELD = 'partner_class';
     public const TRANSPORTS_FIELD = 'transports';
     public const FAILURE_TRANSPORT_FIELD = 'failure_transport';
     public const EXCHANGE_NAME_FIELD = 'exchange_name';
@@ -33,6 +36,24 @@ final class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('cvek_partner');
         $treeBuilder->getRootNode()
+            ->children()
+                ->booleanNode(self::USE_BUILTIN_CREATOR_FIELD)
+                    ->info('Use builtin handler to create new partner')
+                    ->defaultTrue()
+                ->end()
+            ->end()
+            ->children()
+                ->booleanNode(self::USE_BUILTIN_REMOVER_FIELD)
+                    ->info('Use builtin handler to remove partner')
+                    ->defaultTrue()
+                ->end()
+            ->end()
+            ->children()
+                ->scalarNode(self::PARTNER_CLASS_FIELD)
+                    ->info('FQN of partner class to be able to persist and remove it')
+                    ->defaultValue('App\Entity\Partner')
+                ->end()
+            ->end()
             ->children()
                 ->scalarNode(self::FAILURE_TRANSPORT_FIELD)
                     ->info('Transport to catch error messages')

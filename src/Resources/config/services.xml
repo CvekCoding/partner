@@ -16,5 +16,22 @@
         </service>
         <service id="Cvek\PartnerBundle\Messenger\Serializer\PartnerRemovedSerializer" alias="cvek_partner_removed_serializer" public="false" />
 
+        <service id="cvek_partner_created_handler" class="Cvek\PartnerBundle\Messenger\Handler\PartnerCreatedHandler" public="false" >
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="messenger.default_bus" />
+            <argument type="string" />
+            <argument />
+            <tag name="messenger.message_handler" />
+        </service>
+        <service id="Cvek\PartnerBundle\Messenger\Handler\PartnerCreatedHandler" alias="cvek_partner_created_handler" public="false" />
+
+        <service id="cvek_partner_removed_handler" class="Cvek\PartnerBundle\Messenger\Handler\PartnerRemovedHandler" public="false" >
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="string" />
+            <argument />
+            <tag name="messenger.message_handler" />
+        </service>
+        <service id="Cvek\PartnerBundle\Messenger\Handler\PartnerCreatedHandler" alias="cvek_partner_removed_handler" public="false" />
+
     </services>
 </container>
